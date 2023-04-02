@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AlgosAndSamples
 {
-	public class BubbleSort
+	class BubbleSort : ProcessBase
 	{
 		/// <summary>
 		/// Solution using two for loops
@@ -38,7 +38,7 @@ namespace AlgosAndSamples
 		/// <summary>
 		/// Sort using while loop
 		/// </summary>
-		public void Sort_2()
+		public override void StartProcess()
 		{
 			int[] arr = { 5, 1, 4, 2, 8 };
 			bool unSortedValueFound = false;

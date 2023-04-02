@@ -12,10 +12,28 @@ namespace AlgosAndSamples
 			BenchmarkRunner.Run<Bench>();
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
+			
+			Bench bench = new Bench();
+			bench.DateStringWithSubString();
+			Process();
+			stopwatch.Stop();
+			Console.WriteLine($"stopwatch.Elapsed time: {stopwatch.Elapsed.Hours}, {stopwatch.Elapsed.Minutes}, {stopwatch.Elapsed.Seconds}, {stopwatch.Elapsed.Milliseconds}");
+			Console.WriteLine($"Duration: {stopwatch.Elapsed.Duration()}");
+			Console.WriteLine($"Elapsed: {stopwatch.Elapsed}");
+
+		}
+		static void Process()
+		{
+			Console.WriteLine($"Please enter the process you want to run:: ");
+			foreach (var item in System.Reflection.Assembly.GetExecutingAssembly().GetTypes())
+				Console.WriteLine("FullyQualifiedName: " + item.Namespace + "." + item.Name);
+			var fullyQualifiedName = Console.ReadLine();
+			ProcessBase pb = GetProcessInstance(fullyQualifiedName);
+			pb.StartProcess();
+			#region Test support comments
+
 			//HE_TimeDiff he = new HE_TimeDiff();
 			//he.DiffProcess();
-			//Bench bench = new Bench();
-			//bench.DateStringWithSubString();
 			//var A = CommonHelper.IntArr(Console.ReadLine());
 			//var P = CommonHelper.IntArr(Console.ReadLine());
 			//var count = 0;
@@ -26,7 +44,6 @@ namespace AlgosAndSamples
 			//		count++;
 			//}
 			//Console.WriteLine(count);
-			#region Test support comments
 			/// Uncomment to Test Singleton Pattern
 			//SingletonDP.CheckSingleton();
 			/// Uncomment for Testing Memento Pattern
@@ -34,15 +51,32 @@ namespace AlgosAndSamples
 
 			//BST bST = new BST();
 			//bST.Run();
-			HE_Monk_Array_Rotation_Solution obj = new HE_Monk_Array_Rotation_Solution();
-			obj.Array_Rotation();
+			//HE_Monk_Array_Rotation_Solution obj = new HE_Monk_Array_Rotation_Solution();
+			//obj.Array_Rotation();
 			//Console.ReadKey(true); 
-			stopwatch.Stop();
-			Console.WriteLine($"stopwatch.Elapsed time: {stopwatch.Elapsed.Hours}, {stopwatch.Elapsed.Minutes}, {stopwatch.Elapsed.Seconds}, {stopwatch.Elapsed.Milliseconds}");
-			Console.WriteLine($"Duration: {stopwatch.Elapsed.Duration()}");
-			Console.WriteLine($"Elapsed: {stopwatch.Elapsed}");
-
+			//PrimeNumbers.PrintPrimeNumbers();
 			#endregion
+		}
+		/// <summary>
+		/// Returns object of the class that overrides ProcessBase class.
+		/// Needs fullyQualifiedname (=Namespace.ClassName) of the class whose object needs to be created, as parameter. e.g. AlgosAndSamples.DryRun
+		/// </summary>
+		/// <param name="fullyQualifiedName">Namespace.ClassName</param>
+		/// <returns></returns>
+		static ProcessBase GetProcessInstance(string fullyQualifiedName)
+		{
+			// If the class is in the current Assembly then type != null.
+			Type type = Type.GetType(fullyQualifiedName);
+			if(type != null)
+				return (ProcessBase)Activator.CreateInstance(type);
+			//else check in each Assembly for this class.
+			foreach(var asm in AppDomain.CurrentDomain.GetAssemblies())
+			{
+				type = asm.GetType(fullyQualifiedName);
+				if(type != null)
+					return (ProcessBase)Activator.CreateInstance(type);
+			}
+			return null;
 		}
 
 
@@ -133,4 +167,16 @@ namespace AlgosAndSamples
 			Console.WriteLine(this.GetType().Name + " - " + System.Reflection.MethodBase.GetCurrentMethod().Name + " called");
 		}
 	}
+
+	abstract class Component
+	{
+		public abstract string Name { get; set; }
+		public abstract int Id { get; set; }
+	}
+	class Frame : Component
+	{
+		public override string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+		public override int Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+	}
+
 }

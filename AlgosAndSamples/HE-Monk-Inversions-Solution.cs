@@ -2,13 +2,13 @@
 
 namespace AlgosAndSamples
 {
-	public class HE_Monk_Inversions_Solution
+	class HeMonkInversionsSolution: ProcessBase
 	{
 		/// <summary>
 		/// The following solution is regarding to HackerEarth question regarding Inversions in an Array.
 		/// Ref: https://www.hackerearth.com/practice/codemonk/  Monk and Inversions question
 		/// </summary>
-		public void CheckInversions()
+		public override void StartProcess()
 		{
 			var testCases = Convert.ToInt32(Console.ReadLine());
 			int[] numOfInversions = new int[testCases];
